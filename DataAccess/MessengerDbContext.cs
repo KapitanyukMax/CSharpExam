@@ -32,20 +32,23 @@ namespace DataAccess
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Credentials>().HasKey(c => c.Id);
+            modelBuilder.Entity<Credentials>().Property(c => c.Login).IsRequired();
+            modelBuilder.Entity<Credentials>().Property(c => c.Password).IsRequired();
+            modelBuilder.Entity<Credentials>().Property(c => c.Name).IsRequired();
 
             modelBuilder.Entity<User>().HasKey(u => u.CredentialsId);
+            modelBuilder.Entity<User>().Property(c => c.IPAddress).IsRequired();
 
             modelBuilder.Entity<Chat>().HasKey(ch => ch.Id);
-
             modelBuilder.Entity<Message>().HasKey(m => m.Id);
 
             modelBuilder.Entity<Credentials>().HasOne(c => c.User)
                                               .WithOne(u => u.Credentials)
                                               .HasForeignKey<User>(u => u.CredentialsId);
-
-            modelBuilder.Entity<User>().HasMany(u => u.Chats).WithMany(ch => ch.Users);
-
+            modelBuilder.Entity<User>().HasMany(u => u.Chats).WithMany(ch => ch.Members);
             modelBuilder.Entity<Chat>().HasMany(ch => ch.Messages).WithOne(m => m.Chat);
+
+            modelBuilder.Entity<Message>().UseTphMappingStrategy();
         }
     }
 }

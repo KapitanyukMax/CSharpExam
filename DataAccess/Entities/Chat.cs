@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public User[] Users { get; set; }
+        public User[] Members { get; set; }
 
         public Message[] Messages { get; set; }
     }
