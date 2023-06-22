@@ -6,5 +6,7 @@ namespace DataAccess.Entities
     {
         [Required]
         public string Url { get; set; }
+
+        public string? Caption { get; set; }
     }
 }

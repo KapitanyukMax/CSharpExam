@@ -8,6 +8,8 @@
 
         public Credentials Credentials { get; set; }
 
-        public Chat[] Chats { get; set; }
+        public UserChat[] UsersChats { get; set; }
+
+        public Message[] Messages { get; set; }
     }
 }
