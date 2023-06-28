@@ -24,7 +24,7 @@ namespace DataAccess
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseSqlServer(@"Data Source=MAX-DESKTOP\SQLEXPRESS;
+            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-OTNHA5J\SQLEXPRESS;
                                           Initial Catalog=MessengerDb;
                                           Integrated Security=True;
                                           Connect Timeout=30;

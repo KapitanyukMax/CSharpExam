@@ -1,4 +1,8 @@
-﻿using System;
+﻿using DataAccess;
+using DataAccess.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +23,8 @@ namespace CSharpExam
     /// </summary>
     public partial class LoginWindow : Window
     {
+        string login;
+        string pass;
         public LoginWindow()
         {
             InitializeComponent();
@@ -26,12 +32,34 @@ namespace CSharpExam
 
         private void loginBTN_Click(object sender, RoutedEventArgs e)
         {
+            login = loginTxtBox.Text;
+            pass = passwordTxtBox.Password;
+            using (var dbContext = new MessengerDbContext())
+            {
+                var user = dbContext.Credentials.FirstOrDefault(c => c.Login == login && c.Password == pass);
+                if (user != null)
+                {
+                    MessageBox.Show("EnterChat");
+                }
+                else {
+                    var result = MessageBox.Show("No such user. Dou you want to registrate?", "Incorrect input", MessageBoxButton.YesNo);
 
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        RegistrationWindow regwin = new RegistrationWindow();
+                        regwin.Show();
+                    }
+                    else if (result == MessageBoxResult.No)
+                    {
+                        this.Close();
+                    }
+                }
+            }
         }
 
         private void cancelBTN_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
     }
 }
