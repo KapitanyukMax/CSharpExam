@@ -6,7 +6,10 @@ namespace DataAccess
 {
     public class MessengerDbContext : DbContext
     {
- 
+        public MessengerDbContext()
+        {
+            this.Database.EnsureCreated();
+        }
         public DbSet<Credentials> Credentials { get; set; }
 
         public DbSet<User> Users { get; set; }
