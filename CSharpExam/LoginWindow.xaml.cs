@@ -61,5 +61,11 @@ namespace CSharpExam
         {
             this.Close();
         }
+
+        private void registrationBTN_Click(object sender, RoutedEventArgs e)
+        {
+            RegistrationWindow registration = new RegistrationWindow();
+            registration.Show();
+        }
     }
 }

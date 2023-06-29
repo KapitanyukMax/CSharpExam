@@ -1,4 +1,5 @@
-﻿using DataAccess.Entities;
+﻿
+using DataAccess.Entities;
 using System.Net;
 using System.Net.Sockets;
 
@@ -17,6 +18,23 @@ namespace Server_TCP
             server.Start();
 
             Chat chat = new Chat();
+
+            while (true)
+            {
+                Console.WriteLine("Waiting for a request...");
+                TcpClient client = server.AcceptTcpClient();
+
+                Console.WriteLine($"\tGot a TcpClient!");
+
+                ClientCommand req = GetClientRequest(client);
+
+                Console.WriteLine($"\tGot a {req.Command} request!");
+
+                if (req.Command == RequestCommand.Join)
+                {
+                    chat.AddMember(client);
+                }
+            }
         }
     }
 }

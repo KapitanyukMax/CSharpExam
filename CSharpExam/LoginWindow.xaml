@@ -19,11 +19,12 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Label Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30">Login Form:</Label>
-        <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="20"> Login:</Label>
-        <TextBox x:Name="loginTxtBox" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" MaxHeight="25" Margin="10"></TextBox>
-        <Label Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="20">Password:</Label>
-        <PasswordBox x:Name="passwordTxtBox" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Height="25" Margin=" 10 10 10 0" VerticalAlignment="Top"></PasswordBox>
+        <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="20"> Login:</Label>
+        <TextBox x:Name="loginTxtBox" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Height="25" Margin="10" VerticalAlignment="Top"></TextBox>
+        <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="20">Password:</Label>
+        <PasswordBox x:Name="passwordTxtBox" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Height="25" Margin=" 10 10 10 0" VerticalAlignment="Bottom"></PasswordBox>
         <Button x:Name ="loginBTN" Click="loginBTN_Click" Grid.Column="1" Grid.Row="2" MaxHeight="25" Margin="25">Login</Button>
         <Button x:Name ="cancelBTN" Click="cancelBTN_Click" Grid.Column="2" Grid.Row="2" MaxHeight="25" Margin="25">Cancel</Button>
+        <Button x:Name="registrationBTN" Click="registrationBTN_Click" Grid.Column="3" Grid.Row="2" Margin="35">Registration</Button>
     </Grid>
 </Window>

@@ -32,8 +32,8 @@
         <Label Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Margin="35 0 0 0">Phone number :</Label>
         <Label Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Margin="35 0 0 0">Mail Adress :</Label>
         <TextBox x:Name="loginTXTBX" Grid.Row="1"  Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="25"></TextBox>
-        <TextBox x:Name="passwordTXTBX" Grid.Row="2"  Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="25"></TextBox>
-        <TextBox x:Name="confirmPassTXTBX" Grid.Row="3"  Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="25"></TextBox>
+        <PasswordBox x:Name="passwordTXTBX" Grid.Row="2"  Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="25"></PasswordBox>
+        <PasswordBox x:Name="confirmPassTXTBX" Grid.Row="3"  Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="25"></PasswordBox>
         <TextBox x:Name="nameTXTBX" Grid.Row="4"  Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="25"></TextBox>
         <TextBox x:Name="phoneTXTBX" Grid.Row="5"  Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="25"></TextBox>
         <TextBox x:Name="emailTXTBX" Grid.Row="6"  Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="25"></TextBox>
