@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataAccess1\DataAccess1.csproj" />
+    <ProjectReference Include="..\Server_TCP\Server_TCP.csproj" />
   </ItemGroup>
 
 </Project>
