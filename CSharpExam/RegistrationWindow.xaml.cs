@@ -23,5 +23,10 @@ namespace CSharpExam
         {
             InitializeComponent();
         }
+
+        private void confirmBTN_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

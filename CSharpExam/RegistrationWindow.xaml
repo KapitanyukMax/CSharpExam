@@ -7,6 +7,38 @@
         mc:Ignorable="d"
         Title="RegistrationWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="30">Registration Form :</Label>
+        <Label Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Margin="35 0 0 0">Login :</Label>
+        <Label Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Margin="35 0 0 0">Paswword :</Label>
+        <Label Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Margin="35 0 0 0">Confirm password :</Label>
+        <Label Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Margin="35 0 0 0">Name :</Label>
+        <Label Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Margin="35 0 0 0">Phone number :</Label>
+        <Label Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Margin="35 0 0 0">Mail Adress :</Label>
+        <TextBox x:Name="loginTXTBX" Grid.Row="1"  Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="25"></TextBox>
+        <TextBox x:Name="passwordTXTBX" Grid.Row="2"  Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="25"></TextBox>
+        <TextBox x:Name="confirmPassTXTBX" Grid.Row="3"  Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="25"></TextBox>
+        <TextBox x:Name="nameTXTBX" Grid.Row="4"  Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="25"></TextBox>
+        <TextBox x:Name="phoneTXTBX" Grid.Row="5"  Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="25"></TextBox>
+        <TextBox x:Name="emailTXTBX" Grid.Row="6"  Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="25"></TextBox>
+        <Button x:Name="confirmBTN" Click="confirmBTN_Click" Grid.Column="1" Grid.Row="7" Margin="10">Confirm</Button>
+        <Button x:Name="clearBTN" Click="clearBTN_Click" Grid.Column="2" Grid.Row="7" Margin="10">Clear</Button>
+        <Button x:Name="cancelBTN" Click="cancelBTN_Click" Grid.Column="3" Grid.Row="7" Margin="10">Cancel</Button>
     </Grid>
 </Window>
