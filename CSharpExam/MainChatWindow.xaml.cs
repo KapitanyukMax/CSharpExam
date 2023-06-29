@@ -25,5 +25,15 @@ namespace CSharpExam
         {
             InitializeComponent();
         }
+
+        private void addFileBTN_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void sendBTN_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
