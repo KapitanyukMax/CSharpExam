@@ -39,7 +39,9 @@ namespace CSharpExam
                 var user = dbContext.Credentials.FirstOrDefault(c => c.Login == login && c.Password == pass);
                 if (user != null)
                 {
-                    MessageBox.Show("EnterChat");
+                    MainWindow mainWindow = new MainWindow(user);
+                    mainWindow.Show();
+                    this.Close();
                 }
                 else {
                     var result = MessageBox.Show("No such user. Dou you want to registrate?", "Incorrect input", MessageBoxButton.YesNo);

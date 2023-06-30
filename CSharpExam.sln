@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess1", "DataAccess1\DataAccess1.csproj", "{E600E1F9-638A-4BAD-9A4C-9874A1F9EA53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server_TCP", "Server_TCP\Server_TCP.csproj", "{BAB787F3-C017-4674-A38E-437996D32C7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server_TCP", "Server_TCP\Server_TCP.csproj", "{BAB787F3-C017-4674-A38E-437996D32C7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

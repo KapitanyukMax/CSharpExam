@@ -31,12 +31,10 @@ namespace CSharpExam
         private void confirmBTN_Click(object sender, RoutedEventArgs e)
         {
             
-            //string login = loginTXTBX.Text;
+           
             string password = passwordTXTBX.Password;
             string confPass = confirmPassTXTBX.Password;
-            //string name = nameTXTBX.Text;
-            //string phoneNumber = phoneTXTBX.Text;
-            //string email = emailTXTBX.Text;
+         
             if (password!=confPass)
             {
                 MessageBox.Show("You entered different passwords! Try one more time");
