@@ -21,7 +21,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+        <Style TargetType="Window">
+            <Setter Property="FontFamily" Value="Comic Sans MS" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="Black" />
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

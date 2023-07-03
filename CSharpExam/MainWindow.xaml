@@ -21,15 +21,22 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style TargetType="Window">
+            <Setter Property="FontFamily" Value="Comic Sans MS" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="Black" />
+        </Style>
     </Window.Resources>
     <Grid>
         <StackPanel>
             <Label x:Name="chatNameLBl" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Top"></Label>
-            <TextBlock x:Name="mainTextBlock" Height="350" Width="500" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
+            <Border BorderBrush="Black" BorderThickness="1" Padding="5" Height="350" Width="580">
+                <TextBlock x:Name="mainTextBlock" Height="350" Width="580" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="1 0 0 0"></TextBlock>
+            </Border>
             <DockPanel>
             <TextBox x:Name="messageTxtBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="400" Margin="15"></TextBox>
             <Button x:Name="sendBTN" Click="sendBTN_Click" Height="25" VerticalAlignment="Bottom" Margin="10" Width="50">Send</Button>
-            <Button x:Name="addFileBTN" Click="addFileBTN_Click" Height="25" VerticalAlignment="Bottom" Margin="10">Add</Button>
+            <Button x:Name="addFileBTN" Click="addFileBTN_Click" Height="25" VerticalAlignment="Bottom" Margin="10" >Add</Button>
             </DockPanel>
         </StackPanel>
     </Grid>
