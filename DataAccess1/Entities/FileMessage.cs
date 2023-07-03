@@ -2,6 +2,7 @@
 
 namespace DataAccess.Entities
 {
+    [Serializable]
     public class FileMessage : Message
     {
         [Required]

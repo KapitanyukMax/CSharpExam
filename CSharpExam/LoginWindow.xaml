@@ -5,7 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CSharpExam"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="450" Width="800">
+        Title="LoginWindow" Height="350" Width="600">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -18,13 +34,13 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Label Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30">Login Form:</Label>
-        <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="20"> Login:</Label>
+        <Label Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30" FontFamily="Comic Sans MS">Login Form:</Label>
+        <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="20" FontFamily="Comic Sans MS"> Login:</Label>
         <TextBox x:Name="loginTxtBox" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Height="25" Margin="10" VerticalAlignment="Top"></TextBox>
-        <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="20">Password:</Label>
+        <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="20" FontFamily="Comic Sans MS">Password:</Label>
         <PasswordBox x:Name="passwordTxtBox" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Height="25" Margin=" 10 10 10 0" VerticalAlignment="Bottom"></PasswordBox>
-        <Button x:Name ="loginBTN" Click="loginBTN_Click" Grid.Column="1" Grid.Row="2" MaxHeight="25" Margin="25">Login</Button>
-        <Button x:Name ="cancelBTN" Click="cancelBTN_Click" Grid.Column="2" Grid.Row="2" MaxHeight="25" Margin="25">Cancel</Button>
-        <Button x:Name="registrationBTN" Click="registrationBTN_Click" Grid.Column="3" Grid.Row="2" Margin="35">Registration</Button>
+        <Button x:Name ="loginBTN" Click="loginBTN_Click" Grid.Column="1" Grid.Row="2" MaxHeight="25" Margin="25" FontFamily="Comic Sans MS">Login</Button>
+        <Button x:Name ="cancelBTN" Click="cancelBTN_Click" Grid.Column="2" Grid.Row="2" MaxHeight="25" Margin="25" FontFamily="Comic Sans MS">Cancel</Button>
+        <Button x:Name="registrationBTN" Click="registrationBTN_Click" Grid.Column="3" Grid.Row="2" Margin="35" FontFamily="Comic Sans MS">Registration</Button>
     </Grid>
 </Window>

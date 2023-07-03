@@ -6,6 +6,22 @@
         xmlns:local="clr-namespace:CSharpExam"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="600">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <StackPanel>
             <Label x:Name="chatNameLBl" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Top"></Label>
