@@ -34,7 +34,7 @@ namespace CSharpExam
             string password = user.Password;
 
             InitializeComponent();
-            
+
         }
         private void addFileBTN_Click(object sender, RoutedEventArgs e)
         {
