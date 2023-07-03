@@ -42,7 +42,6 @@ namespace DataAccess
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>().HasKey(c => c.Id);
-            modelBuilder.Entity<User>().Property(c => c.IPAddress).IsRequired();
             modelBuilder.Entity<User>().Property(c => c.Id)
                                               .ValueGeneratedOnAdd()
                                               .UseIdentityColumn();

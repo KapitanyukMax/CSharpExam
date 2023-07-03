@@ -12,7 +12,6 @@ public static void SeedUsers(this ModelBuilder modelBuilder)
                 new User
                 {
                     Id = 1,
-                    IPAddress = "192.168.1.107",
                     Login = "Max111",
                     Password = "12345678",
                     Name = "Max",
@@ -22,7 +21,6 @@ public static void SeedUsers(this ModelBuilder modelBuilder)
                 new User
                 {
                     Id = 2,
-                    IPAddress = "192.168.1.107",
                     Login = "Max111",
                     Password = "12345678",
                     Name = "Max",
@@ -32,7 +30,6 @@ public static void SeedUsers(this ModelBuilder modelBuilder)
                 new User
                 {
                     Id = 3,
-                    IPAddress = "192.168.1.107",
                     Login = "Max111",
                     Password = "12345678",
                     Name = "Max",
