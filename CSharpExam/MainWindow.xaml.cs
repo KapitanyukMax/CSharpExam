@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using DataAccess.Entities;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -26,8 +27,8 @@ namespace CSharpExam
     public partial class MainWindow : Window
     {
         private User user;
-
-        public MainWindow()
+        private Chat chat;
+        public MainWindow(Chat? selectedChat)
         {
             InitializeComponent();
         }
@@ -69,6 +70,21 @@ namespace CSharpExam
                 }
 
                 client.Close();
+            }
+        }
+
+        private void messageTxtBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            using (var dbContext = new MessengerDbContext())
+            {
+                var chatWithMessages = dbContext.Chats.Include(c => c.Messages).FirstOrDefault(c => c.Id == chat.Id);
+                if (chatWithMessages != null)
+                {
+                    foreach (var message in chatWithMessages.Messages)
+                    {
+                        mainTextBlock.Items.Add(message);
+                    }
+                }
             }
         }
         //private void sendBTN_Click(object sender, RoutedEventArgs e)
