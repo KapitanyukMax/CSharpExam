@@ -5,7 +5,7 @@ namespace DataAccess.Helpers
 {
     public static class DbInitializer
     {
-public static void SeedUsers(this ModelBuilder modelBuilder)
+        public static void SeedUsers(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasData(new User[]
             {

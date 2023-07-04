@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,15 +25,15 @@ namespace CSharpExam
     /// </summary>
     public partial class MainWindow : Window
     {
-        
+        private User user;
+
         public MainWindow()
         {
             InitializeComponent();
         }
         public MainWindow(User user)
         {
-            string login = user.Login;
-            string password = user.Password;
+            this.user = user;
 
             InitializeComponent();
 
@@ -50,14 +51,20 @@ namespace CSharpExam
             {
                 client.Connect(serverIp, serverPort);
 
+                BinaryFormatter serializer = new BinaryFormatter();
+
                 using (NetworkStream stream = client.GetStream())
                 {
-                    TextMessage message = new TextMessage();
-                    message.Text = messageTxtBox.Text;
+                    TextMessage message = new TextMessage
+                    {
+                        Text = messageTxtBox.Text,
+                        ChatId = 1,
+                        SenderId = user.Id
+                    };
                     messageTxtBox.Clear();
-                    byte[] messageBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
+                    
+                    serializer.Serialize(stream, message);
 
-                    stream.Write(messageBytes, 0, messageBytes.Length);
                     stream.Flush();
                 }
 
