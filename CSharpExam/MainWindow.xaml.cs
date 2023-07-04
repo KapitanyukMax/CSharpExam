@@ -28,14 +28,13 @@ namespace CSharpExam
         {
             InitializeComponent();
         }
-        public MainWindow(Credentials user)
+        public MainWindow(User user)
         {
             string login = user.Login;
             string password = user.Password;
-            string userIp = user.User.IPAddress.ToString();
 
             InitializeComponent();
-            
+
         }
         private void addFileBTN_Click(object sender, RoutedEventArgs e)
         {

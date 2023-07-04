@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MessengerDbContext))]
-    partial class MessengerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230703190712_RemovingUsersAndCredentials")]
+    partial class RemovingUsersAndCredentials
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,73 +85,11 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ChatId");
 
-                    b.HasIndex("SenderId");
-
                     b.ToTable("Messages");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Message");
 
                     b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("DataAccess.Entities.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MailAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Login = "Max111",
-                            MailAddress = "maxik20192006max@gmail.com",
-                            Name = "Max",
-                            Password = "12345678",
-                            PhoneNumber = "+38(068)-762-92-33"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Login = "Max111",
-                            MailAddress = "maxik20192006max@gmail.com",
-                            Name = "Max",
-                            Password = "12345678",
-                            PhoneNumber = "+38(068)-762-92-33"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Login = "Max111",
-                            MailAddress = "maxik20192006max@gmail.com",
-                            Name = "Max",
-                            Password = "12345678",
-                            PhoneNumber = "+38(068)-762-92-33"
-                        });
                 });
 
             modelBuilder.Entity("DataAccess.Entities.UserChat", b =>
@@ -307,15 +248,7 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccess.Entities.User", "Sender")
-                        .WithMany("Messages")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Chat");
-
-                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.UserChat", b =>
@@ -326,25 +259,10 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccess.Entities.User", "User")
-                        .WithMany("UsersChats")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Chat");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Chat", b =>
-                {
-                    b.Navigation("Messages");
-
-                    b.Navigation("UsersChats");
-                });
-
-            modelBuilder.Entity("DataAccess.Entities.User", b =>
                 {
                     b.Navigation("Messages");
 

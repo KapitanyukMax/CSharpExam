@@ -36,7 +36,7 @@ namespace CSharpExam
             pass = passwordTxtBox.Password;
             using (var dbContext = new MessengerDbContext())
             {
-                var user = dbContext.Credentials.FirstOrDefault(c => c.Login == login && c.Password == pass);
+                var user = dbContext.Users.FirstOrDefault(c => c.Login == login && c.Password == pass);
                 if (user != null)
                 {
                     MainWindow mainWindow = new MainWindow(user);

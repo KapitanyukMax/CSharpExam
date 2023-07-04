@@ -45,7 +45,7 @@ namespace CSharpExam
             {
                 using(var context = new MessengerDbContext())
             {
-                    var newUser = new Credentials
+                    var newUser = new User
                     {
                         Login = loginTXTBX.Text,
                         Password = passwordTXTBX.Password,
@@ -53,7 +53,7 @@ namespace CSharpExam
                         PhoneNumber = phoneTXTBX.Text,
                         MailAddress = emailTXTBX.Text
                     };
-                    context.Credentials.Add(newUser);
+                    context.Users.Add(newUser);
                     context.SaveChanges();
                     MessageBox.Show("Successfuly registration");
 

@@ -1,16 +1,15 @@
 ﻿using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata;
 
 namespace DataAccess.Helpers
 {
     public static class DbInitializer
     {
-        public static void SeedCredentials(this ModelBuilder modelBuilder)
+public static void SeedUsers(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Credentials>().HasData(new Credentials[]
+            modelBuilder.Entity<User>().HasData(new User[]
             {
-                new Credentials
+                new User
                 {
                     Id = 1,
                     Login = "Max111",
@@ -19,42 +18,23 @@ namespace DataAccess.Helpers
                     PhoneNumber = "+38(068)-762-92-33",
                     MailAddress = "maxik20192006max@gmail.com"
                 },
-                new Credentials
+                new User
                 {
                     Id = 2,
-                    Login = "Yurii111",
+                    Login = "Max111",
                     Password = "12345678",
-                    Name = "Yurii"
+                    Name = "Max",
+                    PhoneNumber = "+38(068)-762-92-33",
+                    MailAddress = "maxik20192006max@gmail.com"
                 },
-                new Credentials
+                new User
                 {
                     Id = 3,
-                    Login = "Ivan111",
+                    Login = "Max111",
                     Password = "12345678",
-                    Name = "Ivan",
-                    PhoneNumber = "+38(095)-471-26-24"
-                }
-            });
-        }
-
-        public static void SeedUsers(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<User>().HasData(new User[]
-            {
-                new User
-                {
-                    CredentialsId = 1,
-                    IPAddress = "192.168.1.107"
-                },
-                new User
-                {
-                    CredentialsId = 2,
-                    IPAddress = "192.168.1.107"
-                },
-                new User
-                {
-                    CredentialsId = 3,
-                    IPAddress = "192.168.1.107"
+                    Name = "Max",
+                    PhoneNumber = "+38(068)-762-92-33",
+                    MailAddress = "maxik20192006max@gmail.com"
                 }
             });
         }

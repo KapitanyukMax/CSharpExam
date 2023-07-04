@@ -6,6 +6,8 @@
 
         public DateTime SendingTime { get; set; }
 
+        public string? Discriminator { get; set; }
+
         public int ChatId { get; set; }
 
         public Chat Chat { get; set; }

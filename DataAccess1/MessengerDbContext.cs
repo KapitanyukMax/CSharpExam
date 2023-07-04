@@ -10,7 +10,6 @@ namespace DataAccess
         {
             //this.Database.EnsureCreated();
         }
-        public DbSet<Credentials> Credentials { get; set; }
 
         public DbSet<User> Users { get; set; }
 
@@ -27,8 +26,8 @@ namespace DataAccess
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-
-            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-OTNHA5J\SQLEXPRESS;
+            
+            optionsBuilder.UseSqlServer(@"Data Source=MAX-DESKTOP\SQLEXPRESS;
                                           Initial Catalog=MessengerDb;
                                           Integrated Security=True;
                                           Connect Timeout=30;
@@ -42,16 +41,13 @@ namespace DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Credentials>().HasKey(c => c.Id);
-            modelBuilder.Entity<Credentials>().Property(c => c.Id)
+            modelBuilder.Entity<User>().HasKey(c => c.Id);
+            modelBuilder.Entity<User>().Property(c => c.Id)
                                               .ValueGeneratedOnAdd()
                                               .UseIdentityColumn();
-            modelBuilder.Entity<Credentials>().Property(c => c.Login).IsRequired();
-            modelBuilder.Entity<Credentials>().Property(c => c.Password).IsRequired();
-            modelBuilder.Entity<Credentials>().Property(c => c.Name).IsRequired();
-
-            modelBuilder.Entity<User>().HasKey(u => u.CredentialsId);
-            modelBuilder.Entity<User>().Property(c => c.IPAddress).IsRequired();
+            modelBuilder.Entity<User>().Property(c => c.Login).IsRequired();
+            modelBuilder.Entity<User>().Property(c => c.Password).IsRequired();
+            modelBuilder.Entity<User>().Property(c => c.Name).IsRequired();
 
             modelBuilder.Entity<UserChat>().HasKey(uch => new { uch.UserId, uch.ChatId });
 
@@ -66,9 +62,6 @@ namespace DataAccess
                                           .UseIdentityColumn();
             modelBuilder.Entity<Message>().Property(m => m.SendingTime).IsRequired();
 
-            modelBuilder.Entity<Credentials>().HasOne(c => c.User)
-                                              .WithOne(u => u.Credentials)
-                                              .HasForeignKey<User>(u => u.CredentialsId);
             modelBuilder.Entity<User>().HasMany(u => u.UsersChats)
                                        .WithOne(uch => uch.User)
                                        .HasForeignKey(uch => uch.UserId);
@@ -84,7 +77,6 @@ namespace DataAccess
 
             modelBuilder.Entity<Message>().UseTphMappingStrategy();
 
-            modelBuilder.SeedCredentials();
             modelBuilder.SeedUsers();
             modelBuilder.SeedChats();
             modelBuilder.SeedUsersChats();

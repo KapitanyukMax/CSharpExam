@@ -2,11 +2,17 @@
 {
     public class User
     {
-        public int CredentialsId { get; set; }
+        public int Id { get; set; }
 
-        public string IPAddress { get; set; }
+        public string Login { get; set; }
 
-        public Credentials Credentials { get; set; }
+        public string Password { get; set; }
+
+        public string Name { get; set; }
+
+        public string? PhoneNumber { get; set; }
+
+        public string? MailAddress { get; set; }
 
         public UserChat[] UsersChats { get; set; }
 
