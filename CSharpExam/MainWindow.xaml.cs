@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using DataAccess.Entities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,24 +41,46 @@ namespace CSharpExam
         {
 
         }
-
         private void sendBTN_Click(object sender, RoutedEventArgs e)
         {
             string serverIp = "127.0.0.1";
             int serverPort = 4000;
+
             using (TcpClient client = new TcpClient())
             {
                 client.Connect(serverIp, serverPort);
-                NetworkStream stream = client.GetStream();
-                TextMessage message = new TextMessage();
-                message.Text = messageTxtBox.Text;
-                byte[]messageBytes = Encoding.UTF8.GetBytes(message.Text);
-                stream.Write(messageBytes, 0, messageBytes.Length);
-                stream.Close();
+
+                using (NetworkStream stream = client.GetStream())
+                {
+                    TextMessage message = new TextMessage();
+                    message.Text = messageTxtBox.Text;
+                    messageTxtBox.Clear();
+                    byte[] messageBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
+
+                    stream.Write(messageBytes, 0, messageBytes.Length);
+                    stream.Flush();
+                }
+
                 client.Close();
             }
-            
-
         }
+        //private void sendBTN_Click(object sender, RoutedEventArgs e)
+        //{
+        //    string serverIp = "127.0.0.1";
+        //    int serverPort = 4000;
+        //    using (TcpClient client = new TcpClient())
+        //    {
+        //        client.Connect(serverIp, serverPort);
+        //        NetworkStream stream = client.GetStream();
+        //        TextMessage message = new TextMessage();
+        //        message.Text = messageTxtBox.Text;
+        //        byte[]messageBytes = Encoding.UTF8.GetBytes(message.Text);
+        //        stream.Write(messageBytes, 0, messageBytes.Length);
+        //        stream.Close();
+        //        client.Close();
+        //    }
+
+
+        //}
     }
 }

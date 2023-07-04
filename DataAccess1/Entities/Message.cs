@@ -1,5 +1,6 @@
 ﻿namespace DataAccess.Entities
 {
+    [Serializable]
     public class Message
     {
         public int Id { get; set; }

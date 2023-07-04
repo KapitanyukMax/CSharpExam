@@ -16,57 +16,132 @@ namespace Server_TCP
         
         static void Main(string[] args)
         {
-            HashSet<TcpClient> connectedClients = new HashSet<TcpClient>();
-            List<User> usersFromDB = GetDataFromDatabase();
-            TcpListener server = new TcpListener(IPAddress.Parse(localIp), localPort);
-            server.Start();
-            Console.WriteLine("Server started and ready for requests...");
-            foreach (User user in usersFromDB)
-            {
-                TcpClient client = new TcpClient();
-                client.Connect(localIp, localPort);
+            //        HashSet<TcpClient> connectedClients = new HashSet<TcpClient>();
+            //        List<User> usersFromDB = GetDataFromDatabase();
+            //        TcpListener server = new TcpListener(IPAddress.Parse(localIp), localPort);
+            //        server.Start();
+            //        Console.WriteLine("Server started and ready for requests...");
+            //        foreach (User user in usersFromDB)
+            //        {
+            //            //TcpClient client = new TcpClient();
+            //            //client.Connect(localIp, localPort);
+            //            TcpClient client = new TcpClient(user.IPAddress, localPort);
+            //            connectedClients.Add(client);
 
-                connectedClients.Add(client);
+            //        }
+            //        while (true)
+            //        {
+            //            Console.WriteLine("Waiting for connection...");
+            //            TcpClient client = server.AcceptTcpClient();
+            //            Console.WriteLine("Connected!");
+            //            NetworkStream stream = client.GetStream();
+            //            byte[] buffer = new byte[1024];
+            //            int bytesRead;
+            //            while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
+            //            {
+            //                string data = System.Text.Encoding.UTF8.GetString(buffer, 0, bytesRead);
+            //                TextMessage message = JsonConvert.DeserializeObject<TextMessage>(data);
+            //                if(message!=null)
+            //                {
+            //                    foreach (TcpClient connectedClient in connectedClients)
+            //                    {
+            //                        NetworkStream clientStream = connectedClient.GetStream();
+            //                        byte[] messageBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
+            //                        clientStream.Write(messageBytes, 0, messageBytes.Length);
+            //                    }
+            //                }
+            //                Console.WriteLine("Get " + data);
 
-            }
-            while (true)
-            {
-                Console.WriteLine("Waiting for connection...");
-                TcpClient client = server.AcceptTcpClient();
-                Console.WriteLine("Connected!");
-                NetworkStream stream = client.GetStream();
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
+            //                byte[] response = System.Text.Encoding.UTF8.GetBytes(data);
+            //                stream.Write(response, 0, response.Length);
+            //            }
+            //            stream.Close();
+            //            client.Close();
+
+            //        }
+            //    }
+
+            //    private static List<User> GetDataFromDatabase()
+            //    {
+            //        using (var context = new MessengerDbContext())
+            //        {
+            //            return context.Users.ToList();
+            //        }
+            //IPEndPoint localEbdPoint = new IPEndPoint(IPAddress.Parse(localIp), localPort);
+            //server = new TcpListener(localEbdPoint);
+            //server.Start();
+
+            //Chat chat = new Chat();
+            //while (true)
+            //{
+            //    Console.WriteLine("Waiting for request...");
+            //    TcpClient tcpClient = server.AcceptTcpClient();
+
+            //    Console.WriteLine("Got a TcpClient");
+
+            //}
+                HashSet<TcpClient> connectedClients = new HashSet<TcpClient>();
+                using (var dbContext = new MessengerDbContext())
                 {
-                    string data = System.Text.Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    Message message = JsonConvert.DeserializeObject<Message>(data);
-                    if(message!=null)
+                    List<User> usersFromDB = dbContext.Users.ToList();
+                    TcpListener server = new TcpListener(IPAddress.Parse(localIp), localPort);
+                    server.Start();
+                    Console.WriteLine("Server started and ready for requests...");
+
+                    foreach (User user in usersFromDB)
                     {
-                        foreach (TcpClient connectedClient in connectedClients)
-                        {
-                            NetworkStream clientStream = connectedClient.GetStream();
-                            byte[] messageBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
-                            clientStream.Write(messageBytes, 0, messageBytes.Length);
-                        }
+                        TcpClient client = new TcpClient();
+                        client.Connect(localIp, localPort);
+                        connectedClients.Add(client);
                     }
-                    Console.WriteLine("Get " + data);
 
-                    byte[] response = System.Text.Encoding.UTF8.GetBytes(data);
-                    stream.Write(response, 0, response.Length);
+                    while (true)
+                    {
+                        Console.WriteLine("Waiting for connection...");
+                        TcpClient client = server.AcceptTcpClient();
+                        //Console.WriteLine("Connected!");
+
+                        NetworkStream stream = client.GetStream();
+
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
+
+                        while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            string data = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                            TextMessage message = JsonConvert.DeserializeObject<TextMessage>(data);
+
+                            if (message != null)
+                            {
+                            // Перевірка ідентифікації користувача
+                            bool isAuthenticated = true;//usersFromDB.Exists(u => u.Username == message.Sender);
+
+                                if (isAuthenticated)
+                                {
+                                    // Збереження повідомлення у таблиці Message
+                                    dbContext.Messages.Add(message);
+                                    dbContext.SaveChanges();
+
+                                    // Розсилка повідомлення підключеним користувачам
+                                    byte[] messageBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
+                                    foreach (TcpClient connectedClient in connectedClients)
+                                    {
+                                        NetworkStream clientStream = connectedClient.GetStream();
+                                        clientStream.Write(messageBytes, 0, messageBytes.Length);
+                                    }
+                                }
+                            }
+
+                            Console.WriteLine("Received message: " + data);
+
+                            byte[] response = Encoding.UTF8.GetBytes(data);
+                            stream.Write(response, 0, response.Length);
+                        }
+
+                        stream.Close();
+                        client.Close();
+                    }
                 }
-                stream.Close();
-                client.Close();
-
-            }
-        }
-
-        private static List<User> GetDataFromDatabase()
-        {
-            using (var context = new MessengerDbContext())
-            {
-                return context.Users.ToList();
             }
         }
     }
-}
