@@ -27,7 +27,7 @@ namespace DataAccess
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-OTNHA5J\SQLEXPRESS;
+            optionsBuilder.UseSqlServer(@"Data Source=MAX-DESKTOP\SQLEXPRESS;
                                           Initial Catalog=MessengerDb;
                                           Integrated Security=True;
                                           Connect Timeout=30;
@@ -61,6 +61,7 @@ namespace DataAccess
                                           .ValueGeneratedOnAdd()
                                           .UseIdentityColumn();
             modelBuilder.Entity<Message>().Property(m => m.SendingTime).IsRequired();
+            modelBuilder.Entity<Message>().Property(m => m.Command).IsRequired();
 
             modelBuilder.Entity<User>().HasMany(u => u.UsersChats)
                                        .WithOne(uch => uch.User)

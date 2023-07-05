@@ -1,5 +1,6 @@
 ﻿namespace DataAccess.Entities
 {
+    [Serializable]
     public class User
     {
         public int Id { get; set; }

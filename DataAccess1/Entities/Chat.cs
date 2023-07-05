@@ -3,6 +3,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DataAccess.Entities
 {
+    [Serializable]
     public class Chat
     {
         public int Id { get; set; }

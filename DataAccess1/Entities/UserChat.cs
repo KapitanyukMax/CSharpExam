@@ -1,5 +1,6 @@
 ﻿namespace DataAccess.Entities
 {
+    [Serializable]
     public class UserChat
     {
         public int UserId { get; set; }

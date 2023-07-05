@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MessengerDbContext))]
-    partial class MessengerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230705090718_AddedFileData")]
+    partial class AddedFileData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +38,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Chats", (string)null);
+                    b.ToTable("Chats");
 
                     b.HasData(
                         new
@@ -68,10 +71,6 @@ namespace DataAccess.Migrations
                     b.Property<int>("ChatId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Command")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -88,7 +87,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Message");
 
@@ -123,7 +122,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
 
                     b.HasData(
                         new
@@ -167,7 +166,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ChatId");
 
-                    b.ToTable("UsersChats", (string)null);
+                    b.ToTable("UsersChats");
 
                     b.HasData(
                         new
@@ -239,7 +238,6 @@ namespace DataAccess.Migrations
                         {
                             Id = 6,
                             ChatId = 2,
-                            Command = "MESSAGE",
                             SenderId = 3,
                             SendingTime = new DateTime(2023, 6, 20, 18, 0, 30, 0, DateTimeKind.Unspecified),
                             Caption = "Here is the file with themes",
@@ -263,7 +261,6 @@ namespace DataAccess.Migrations
                         {
                             Id = 1,
                             ChatId = 1,
-                            Command = "MESSAGE",
                             SenderId = 2,
                             SendingTime = new DateTime(2023, 6, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             Text = "Hello! How are you?"
@@ -272,7 +269,6 @@ namespace DataAccess.Migrations
                         {
                             Id = 2,
                             ChatId = 1,
-                            Command = "MESSAGE",
                             SenderId = 1,
                             SendingTime = new DateTime(2023, 6, 22, 12, 1, 0, 0, DateTimeKind.Unspecified),
                             Text = "I'm fine"
@@ -281,7 +277,6 @@ namespace DataAccess.Migrations
                         {
                             Id = 3,
                             ChatId = 1,
-                            Command = "MESSAGE",
                             SenderId = 3,
                             SendingTime = new DateTime(2023, 6, 22, 12, 5, 0, 0, DateTimeKind.Unspecified),
                             Text = "Pretty good) And you?"
@@ -290,7 +285,6 @@ namespace DataAccess.Migrations
                         {
                             Id = 4,
                             ChatId = 1,
-                            Command = "MESSAGE",
                             SenderId = 2,
                             SendingTime = new DateTime(2023, 6, 22, 12, 5, 30, 0, DateTimeKind.Unspecified),
                             Text = "Not bad. Let's write some code"
@@ -299,7 +293,6 @@ namespace DataAccess.Migrations
                         {
                             Id = 5,
                             ChatId = 1,
-                            Command = "MESSAGE",
                             SenderId = 2,
                             SendingTime = new DateTime(2023, 6, 20, 18, 0, 0, 0, DateTimeKind.Unspecified),
                             Text = "Hi! I found an interesting theme for our course work. It's messenger, what do you think?"
@@ -308,7 +301,6 @@ namespace DataAccess.Migrations
                         {
                             Id = 7,
                             ChatId = 2,
-                            Command = "MESSAGE",
                             SenderId = 3,
                             SendingTime = new DateTime(2023, 6, 20, 18, 2, 0, 0, DateTimeKind.Unspecified),
                             Text = "Ok, it's good, let's choose it"

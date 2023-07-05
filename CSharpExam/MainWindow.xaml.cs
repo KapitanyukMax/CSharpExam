@@ -1,22 +1,11 @@
-﻿using DataAccess;
-using DataAccess.Entities;
-using Newtonsoft.Json;
+﻿using DataAccess.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Threading.Tasks;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace CSharpExam
 {
@@ -25,7 +14,11 @@ namespace CSharpExam
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const string serverIp = "127.0.0.1";
+        private const int serverPort = 4000;
+
         private User user;
+        private TcpClient client = new TcpClient();
 
         public MainWindow()
         {
@@ -33,43 +26,76 @@ namespace CSharpExam
         }
         public MainWindow(User user)
         {
-            this.user = user;
-
             InitializeComponent();
 
+            this.user = user;
+            ConnectToServer();
         }
+
+        private async void ConnectToServer()
+        {
+            await client.ConnectAsync(IPAddress.Parse(serverIp), serverPort);
+
+            SendMessage(new Message
+            {
+                SendingTime = DateTime.Now,
+                Command = "JOIN",
+                ChatId = 1,
+                Sender = user
+            });
+
+            Listen();
+        }
+
+        private async void Listen()
+        {
+            while (true)
+            {
+                Message message = await GetMessageAsync();
+
+                if (message.Command == "MESSAGE")
+                {
+                    if (message is TextMessage textMessage)
+                        MessageBox.Show(textMessage.Text);
+                    else if (message is FileMessage fileMessage)
+                        MessageBox.Show(Path.GetFileName(fileMessage.Url) + "\n" + fileMessage.Caption);
+                }
+            }
+        }
+
+        public Task<Message> GetMessageAsync()
+        {
+            return Task.Run(() =>
+            {
+                BinaryFormatter serializer = new BinaryFormatter();
+                return serializer.Deserialize(client.GetStream()) as Message ?? new Message();
+            });
+        }
+
+        public void SendMessage(Message message)
+        {
+            NetworkStream stream = client.GetStream();
+            BinaryFormatter serializer = new BinaryFormatter();
+            serializer.Serialize(stream, message);
+            stream.Flush();
+        }
+
         private void addFileBTN_Click(object sender, RoutedEventArgs e)
         {
 
         }
+
         private void sendBTN_Click(object sender, RoutedEventArgs e)
         {
-            string serverIp = "127.0.0.1";
-            int serverPort = 4000;
-
-            using (TcpClient client = new TcpClient())
+            SendMessage(new TextMessage
             {
-                client.Connect(serverIp, serverPort);
-
-                BinaryFormatter serializer = new BinaryFormatter();
-
-                using (NetworkStream stream = client.GetStream())
-                {
-                    TextMessage message = new TextMessage
-                    {
-                        Text = messageTxtBox.Text,
-                        ChatId = 1,
-                        SenderId = user.Id
-                    };
-                    messageTxtBox.Clear();
-                    
-                    serializer.Serialize(stream, message);
-
-                    stream.Flush();
-                }
-
-                client.Close();
-            }
+                SendingTime = DateTime.Now,
+                Command = "MESSAGE",
+                Text = messageTxtBox.Text,
+                ChatId = 1,
+                Sender = user
+            });
+            messageTxtBox.Clear();
         }
         //private void sendBTN_Click(object sender, RoutedEventArgs e)
         //{

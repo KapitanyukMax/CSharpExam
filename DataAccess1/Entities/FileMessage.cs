@@ -8,6 +8,9 @@ namespace DataAccess.Entities
         [Required]
         public string Url { get; set; }
 
+        [Required]
+        public byte[] FileData { get; set; }
+
         public string? Caption { get; set; }
     }
 }

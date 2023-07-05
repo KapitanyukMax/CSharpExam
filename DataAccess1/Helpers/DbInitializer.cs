@@ -123,6 +123,7 @@ namespace DataAccess.Helpers
                 {
                     Id = 1,
                     SendingTime = new DateTime(2023, 6, 22, 12, 0, 0),
+                    Command = "MESSAGE",
                     ChatId = 1,
                     SenderId = 2,
                     Text = "Hello! How are you?"
@@ -131,6 +132,7 @@ namespace DataAccess.Helpers
                 {
                     Id = 2,
                     SendingTime = new DateTime(2023, 6, 22, 12, 1, 0),
+                    Command = "MESSAGE",
                     ChatId = 1,
                     SenderId = 1,
                     Text = "I'm fine"
@@ -139,6 +141,7 @@ namespace DataAccess.Helpers
                 {
                     Id = 3,
                     SendingTime = new DateTime(2023, 6, 22, 12, 5, 0),
+                    Command = "MESSAGE",
                     ChatId = 1,
                     SenderId = 3,
                     Text = "Pretty good) And you?"
@@ -147,6 +150,7 @@ namespace DataAccess.Helpers
                 {
                     Id = 4,
                     SendingTime = new DateTime(2023, 6, 22, 12, 5, 30),
+                    Command = "MESSAGE",
                     ChatId = 1,
                     SenderId = 2,
                     Text = "Not bad. Let's write some code"
@@ -155,6 +159,7 @@ namespace DataAccess.Helpers
                 {
                     Id = 5,
                     SendingTime = new DateTime(2023, 6, 20, 18, 0, 0),
+                    Command = "MESSAGE",
                     ChatId = 1,
                     SenderId = 2,
                     Text = "Hi! I found an interesting theme for our course work. It's messenger, what do you think?"
@@ -163,6 +168,7 @@ namespace DataAccess.Helpers
                 {
                     Id = 7,
                     SendingTime = new DateTime(2023, 6, 20, 18, 2, 0),
+                    Command = "MESSAGE",
                     ChatId = 2,
                     SenderId = 3,
                     Text = "Ok, it's good, let's choose it"
@@ -178,9 +184,11 @@ namespace DataAccess.Helpers
                 {
                     Id = 6,
                     SendingTime = new DateTime(2023, 6, 20, 18, 0, 30),
+                    Command = "MESSAGE",
                     ChatId = 2,
                     SenderId = 3,
                     Url = @"E:\Max\Coding\CW_dot_net.pdf",
+                    FileData = File.ReadAllBytes(@"E:\Max\Coding\CW_dot_net.pdf"),
                     Caption = "Here is the file with themes"
                 }
             });
