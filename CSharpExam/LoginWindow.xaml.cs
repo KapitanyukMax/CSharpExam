@@ -39,8 +39,8 @@ namespace CSharpExam
                 var user = dbContext.Users.FirstOrDefault(c => c.Login == login && c.Password == pass);
                 if (user != null)
                 {
-                    MainWindow mainWindow = new MainWindow(user);
-                    mainWindow.Show();
+                    WindowWithAllChats windowWithAllChats = new WindowWithAllChats(user);
+                    windowWithAllChats.Show();
                     this.Close();
                 }
                 else {

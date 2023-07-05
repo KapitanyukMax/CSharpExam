@@ -18,9 +18,9 @@ namespace CSharpExam
         private const int serverPort = 4000;
 
         private User user;
-        private TcpClient client = new TcpClient();
+        private Chat chat;
 
-        public MainWindow()
+        public MainWindow(Chat? selectedChat)
         {
             InitializeComponent();
         }
@@ -96,6 +96,21 @@ namespace CSharpExam
                 Sender = user
             });
             messageTxtBox.Clear();
+        }
+
+        private void messageTxtBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            using (var dbContext = new MessengerDbContext())
+            {
+                var chatWithMessages = dbContext.Chats.Include(c => c.Messages).FirstOrDefault(c => c.Id == chat.Id);
+                if (chatWithMessages != null)
+                {
+                    foreach (var message in chatWithMessages.Messages)
+                    {
+                        mainTextBlock.Items.Add(message);
+                    }
+                }
+            }
         }
         //private void sendBTN_Click(object sender, RoutedEventArgs e)
         //{
