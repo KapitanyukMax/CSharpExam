@@ -42,9 +42,10 @@ namespace DataAccess
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>().HasKey(c => c.Id);
+            modelBuilder.Entity<User>().HasAlternateKey(c => c.Login);
             modelBuilder.Entity<User>().Property(c => c.Id)
-                                              .ValueGeneratedOnAdd()
-                                              .UseIdentityColumn();
+                                       .ValueGeneratedOnAdd()
+                                       .UseIdentityColumn();
             modelBuilder.Entity<User>().Property(c => c.Login).IsRequired();
             modelBuilder.Entity<User>().Property(c => c.Password).IsRequired();
             modelBuilder.Entity<User>().Property(c => c.Name).IsRequired();
@@ -55,6 +56,7 @@ namespace DataAccess
             modelBuilder.Entity<Chat>().Property(ch => ch.Id)
                                        .ValueGeneratedOnAdd()
                                        .UseIdentityColumn();
+            modelBuilder.Entity<Chat>().Property(ch => ch.Name).IsRequired();
 
             modelBuilder.Entity<Message>().HasKey(m => m.Id);
             modelBuilder.Entity<Message>().Property(m => m.Id)

@@ -21,20 +21,17 @@ namespace DataAccess.Helpers
                 new User
                 {
                     Id = 2,
-                    Login = "Max111",
+                    Login = "Yurii111",
                     Password = "12345678",
-                    Name = "Max",
-                    PhoneNumber = "+38(068)-762-92-33",
-                    MailAddress = "maxik20192006max@gmail.com"
+                    Name = "Yurii"
                 },
                 new User
                 {
                     Id = 3,
-                    Login = "Max111",
+                    Login = "Ivan111",
                     Password = "12345678",
-                    Name = "Max",
-                    PhoneNumber = "+38(068)-762-92-33",
-                    MailAddress = "maxik20192006max@gmail.com"
+                    Name = "Ivan",
+                    PhoneNumber = "+38(095)-471-26-24"
                 }
             });
         }
@@ -50,15 +47,18 @@ namespace DataAccess.Helpers
                 },
                 new Chat
                 {
-                    Id = 2
+                    Id = 2,
+                    Name = "Max - Yurii"
                 },
                 new Chat
                 {
-                    Id = 3
+                    Id = 3,
+                    Name = "Yurii - Ivan"
                 },
                 new Chat
                 {
-                    Id = 4
+                    Id = 4,
+                    Name = "Ivan - Max"
                 }
             });
         }
