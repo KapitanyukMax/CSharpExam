@@ -41,7 +41,7 @@ namespace CSharpExam
             {
                 SendingTime = DateTime.Now,
                 Command = "JOIN",
-                ChatId = 1,
+                ChatId = chat.Id,
                 SenderId = user.Id
             });
 
@@ -55,12 +55,7 @@ namespace CSharpExam
                 Message message = await GetMessageAsync();
 
                 if (message.Command == "MESSAGE")
-                {
-                    if (message is TextMessage textMessage)
-                        MessageBox.Show(textMessage.Text);
-                    else if (message is FileMessage fileMessage)
-                        MessageBox.Show(Path.GetFileName(fileMessage.Url) + "\n" + fileMessage.Caption);
-                }
+                    mainListBox.Items.Add(message);
             }
         }
 
@@ -93,7 +88,7 @@ namespace CSharpExam
                 SendingTime = DateTime.Now,
                 Command = "MESSAGE",
                 Text = messageTxtBox.Text,
-                ChatId = 1,
+                ChatId = chat.Id,
                 SenderId = user.Id
             });
             messageTxtBox.Clear();
@@ -101,17 +96,10 @@ namespace CSharpExam
 
         private void messageTxtBox_Loaded(object sender, RoutedEventArgs e)
         {
-            using (var dbContext = new MessengerDbContext())
-            {
-                var chatWithMessages = dbContext.Chats.Include(c => c.Messages).FirstOrDefault(c => c.Id == chat.Id);
-                if (chatWithMessages != null)
-                {
-                    foreach (var message in chatWithMessages.Messages)
-                    {
-                        mainTextBlock.Items.Add(message);
-                    }
-                }
-            }
+            using var dbContext = new MessengerDbContext();
+
+            foreach (Message message in dbContext.Messages.Where(m => m.ChatId == chat.Id).ToList())
+                mainListBox.Items.Add(message);
         }
         //private void sendBTN_Click(object sender, RoutedEventArgs e)
         //{

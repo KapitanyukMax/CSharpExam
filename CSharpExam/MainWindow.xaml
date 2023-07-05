@@ -31,7 +31,7 @@
         <StackPanel>
             <Label x:Name="chatNameLBl" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Top"></Label>
             <Border BorderBrush="Black" BorderThickness="1" Padding="5" Height="350" Width="580">
-                <ListBox x:Name="mainTextBlock" Height="350" Width="580" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="1 0 0 0"></ListBox>
+                <ListBox x:Name="mainListBox" Height="350" Width="580" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="1 0 0 0"></ListBox>
             </Border>
             <DockPanel>
             <TextBox x:Name="messageTxtBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="400" Margin="15" Loaded="messageTxtBox_Loaded"></TextBox>

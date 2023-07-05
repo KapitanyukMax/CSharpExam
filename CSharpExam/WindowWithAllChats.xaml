@@ -30,7 +30,8 @@
     <StackPanel>
         <Border BorderThickness="2px" BorderBrush="Black" Height="380" Width="380">
             
-        <ListBox x:Name="chatWindowLstBox" Height="380" Width="380" Loaded="chatWindowLstBox_Loaded"></ListBox>
+        <ListBox x:Name="chatWindowLstBox" Height="380" Width="380"
+                 DisplayMemberPath="Name" Loaded="chatWindowLstBox_Loaded"></ListBox>
         </Border>
         <Grid>
             <Grid.ColumnDefinitions>

@@ -57,9 +57,12 @@ namespace Server_TCP
                 {
                     foreach (TcpClient connectedClient in connectedUsers.Keys)
                     {
-                        SendResponse(connectedClient, message);
                         dbContext.Messages.Add(message);
                         dbContext.SaveChanges();
+
+                        message.Id = dbContext.Messages.FirstOrDefault(m => m == message).Id;
+
+                        SendResponse(connectedClient, message);
                     }
                 }
                 else if (message.Command == "LEAVE")

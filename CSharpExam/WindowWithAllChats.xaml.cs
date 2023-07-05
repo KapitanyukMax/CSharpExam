@@ -35,22 +35,17 @@ namespace CSharpExam
         {
             if (chatWindowLstBox.SelectedItem != null)
             {
-                var selectedChat = chatWindowLstBox.SelectedItem.ToString();// as Chat;
-                //string chatName = selectedChat.ToString();
-                using (var dbContext = new MessengerDbContext())
+                var chat = chatWindowLstBox.SelectedItem as Chat;
+
+                if (chat != null)
                 {
-                    var chat = dbContext.Chats.FirstOrDefault(c => c.Name == selectedChat);
-                    if (chat != null)
-                    {
-                        MainWindow mainWindow = new MainWindow(User, chat);
-                        mainWindow.Show();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Not found");
-                    }
+                    MainWindow mainWindow = new MainWindow(User, chat);
+                    mainWindow.Show();
                 }
-                //
+                else
+                {
+                    MessageBox.Show("Not found");
+                }
             }
         }
 
@@ -61,16 +56,13 @@ namespace CSharpExam
 
         private void chatWindowLstBox_Loaded(object sender, RoutedEventArgs e)
         {
-            using (var dbContext = new MessengerDbContext())
-            {
-                var chats = dbContext.Chats.Include(c => c.UsersChats).ThenInclude(uc => uc.User).ToList();
+            using var dbContext = new MessengerDbContext();
 
-                foreach (var chat in chats)
-                {
+            var chats = dbContext.UsersChats.Where(uch => uch.UserId == User.Id)
+                                            .Select(uch => uch.Chat).ToList();
 
-                    chatWindowLstBox.Items.Add(chat.Name);
-                }
-            }
+            foreach (var chat in chats)
+                chatWindowLstBox.Items.Add(chat);
         }
     }
 }
