@@ -5,7 +5,7 @@ namespace DataAccess.Helpers
 {
     public static class DbInitializer
     {
-public static void SeedUsers(this ModelBuilder modelBuilder)
+        public static void SeedUsers(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasData(new User[]
             {
@@ -21,20 +21,17 @@ public static void SeedUsers(this ModelBuilder modelBuilder)
                 new User
                 {
                     Id = 2,
-                    Login = "Max111",
+                    Login = "Yurii111",
                     Password = "12345678",
-                    Name = "Max",
-                    PhoneNumber = "+38(068)-762-92-33",
-                    MailAddress = "maxik20192006max@gmail.com"
+                    Name = "Yurii"
                 },
                 new User
                 {
                     Id = 3,
-                    Login = "Max111",
+                    Login = "Ivan111",
                     Password = "12345678",
-                    Name = "Max",
-                    PhoneNumber = "+38(068)-762-92-33",
-                    MailAddress = "maxik20192006max@gmail.com"
+                    Name = "Ivan",
+                    PhoneNumber = "+38(095)-471-26-24"
                 }
             });
         }
@@ -50,15 +47,18 @@ public static void SeedUsers(this ModelBuilder modelBuilder)
                 },
                 new Chat
                 {
-                    Id = 2
+                    Id = 2,
+                    Name = "Max - Yurii"
                 },
                 new Chat
                 {
-                    Id = 3
+                    Id = 3,
+                    Name = "Yurii - Ivan"
                 },
                 new Chat
                 {
-                    Id = 4
+                    Id = 4,
+                    Name = "Ivan - Max"
                 }
             });
         }
@@ -123,6 +123,7 @@ public static void SeedUsers(this ModelBuilder modelBuilder)
                 {
                     Id = 1,
                     SendingTime = new DateTime(2023, 6, 22, 12, 0, 0),
+                    Command = "MESSAGE",
                     ChatId = 1,
                     SenderId = 2,
                     Text = "Hello! How are you?"
@@ -131,6 +132,7 @@ public static void SeedUsers(this ModelBuilder modelBuilder)
                 {
                     Id = 2,
                     SendingTime = new DateTime(2023, 6, 22, 12, 1, 0),
+                    Command = "MESSAGE",
                     ChatId = 1,
                     SenderId = 1,
                     Text = "I'm fine"
@@ -139,6 +141,7 @@ public static void SeedUsers(this ModelBuilder modelBuilder)
                 {
                     Id = 3,
                     SendingTime = new DateTime(2023, 6, 22, 12, 5, 0),
+                    Command = "MESSAGE",
                     ChatId = 1,
                     SenderId = 3,
                     Text = "Pretty good) And you?"
@@ -147,6 +150,7 @@ public static void SeedUsers(this ModelBuilder modelBuilder)
                 {
                     Id = 4,
                     SendingTime = new DateTime(2023, 6, 22, 12, 5, 30),
+                    Command = "MESSAGE",
                     ChatId = 1,
                     SenderId = 2,
                     Text = "Not bad. Let's write some code"
@@ -155,6 +159,7 @@ public static void SeedUsers(this ModelBuilder modelBuilder)
                 {
                     Id = 5,
                     SendingTime = new DateTime(2023, 6, 20, 18, 0, 0),
+                    Command = "MESSAGE",
                     ChatId = 1,
                     SenderId = 2,
                     Text = "Hi! I found an interesting theme for our course work. It's messenger, what do you think?"
@@ -163,6 +168,7 @@ public static void SeedUsers(this ModelBuilder modelBuilder)
                 {
                     Id = 7,
                     SendingTime = new DateTime(2023, 6, 20, 18, 2, 0),
+                    Command = "MESSAGE",
                     ChatId = 2,
                     SenderId = 3,
                     Text = "Ok, it's good, let's choose it"
@@ -178,9 +184,11 @@ public static void SeedUsers(this ModelBuilder modelBuilder)
                 {
                     Id = 6,
                     SendingTime = new DateTime(2023, 6, 20, 18, 0, 30),
+                    Command = "MESSAGE",
                     ChatId = 2,
                     SenderId = 3,
                     Url = @"E:\Max\Coding\CW_dot_net.pdf",
+                    FileData = File.ReadAllBytes(@"E:\Max\Coding\CW_dot_net.pdf"),
                     Caption = "Here is the file with themes"
                 }
             });

@@ -14,8 +14,8 @@
 
         public string? MailAddress { get; set; }
 
-        public UserChat[] UsersChats { get; set; }
+        public ICollection<UserChat> UsersChats { get; set; }
 
-        public Message[] Messages { get; set; }
+        public ICollection<Message> Messages { get; set; }
     }
 }

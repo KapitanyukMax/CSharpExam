@@ -1,11 +1,11 @@
-﻿<Window x:Class="CSharpExam.MainWindow"
+﻿<Window x:Class="CSharpExam.WindowWithAllChats"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CSharpExam"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="600">
+        Title="WindowWithAllChats" Height="450" Width="400">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Template">
@@ -27,17 +27,22 @@
             <Setter Property="Foreground" Value="Black" />
         </Style>
     </Window.Resources>
-    <Grid>
-        <StackPanel>
-            <Label x:Name="chatNameLBl" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Top"></Label>
-            <Border BorderBrush="Black" BorderThickness="1" Padding="5" Height="350" Width="580">
-                <ListBox x:Name="mainListBox" Height="350" Width="580" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="1 0 0 0"></ListBox>
-            </Border>
-            <DockPanel>
-            <TextBox x:Name="messageTxtBox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="400" Margin="15" Loaded="messageTxtBox_Loaded"></TextBox>
-            <Button x:Name="sendBTN" Click="sendBTN_Click" Height="25" VerticalAlignment="Bottom" Margin="10" Width="50">Send</Button>
-            <Button x:Name="addFileBTN" Click="addFileBTN_Click" Height="25" VerticalAlignment="Bottom" Margin="10" >Add</Button>
-            </DockPanel>
-        </StackPanel>
-    </Grid>
+    <StackPanel>
+        <Border BorderThickness="2px" BorderBrush="Black" Height="380" Width="380">
+            
+        <ListBox x:Name="chatWindowLstBox" Height="380" Width="380"
+                 DisplayMemberPath="Name" Loaded="chatWindowLstBox_Loaded"></ListBox>
+        </Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button  x:Name="ConntectBTN" Click="ConntectBTN_Click" Grid.Column="3" HorizontalAlignment="Center" Height="30" Width="Auto" Margin="5">Connect</Button>
+            <Button x:Name="LeaveChatBTN" Click="LeaveChatBTN_Click" Grid.Column="2" HorizontalAlignment="Center" Height="30" Width="Auto" Margin="5">Leave Chat</Button>
+        </Grid>
+        
+    </StackPanel>
 </Window>

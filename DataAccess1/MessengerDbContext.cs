@@ -26,7 +26,7 @@ namespace DataAccess
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            
+
             optionsBuilder.UseSqlServer(@"Data Source=MAX-DESKTOP\SQLEXPRESS;
                                           Initial Catalog=MessengerDb;
                                           Integrated Security=True;
@@ -42,9 +42,10 @@ namespace DataAccess
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>().HasKey(c => c.Id);
+            modelBuilder.Entity<User>().HasAlternateKey(c => c.Login);
             modelBuilder.Entity<User>().Property(c => c.Id)
-                                              .ValueGeneratedOnAdd()
-                                              .UseIdentityColumn();
+                                       .ValueGeneratedOnAdd()
+                                       .UseIdentityColumn();
             modelBuilder.Entity<User>().Property(c => c.Login).IsRequired();
             modelBuilder.Entity<User>().Property(c => c.Password).IsRequired();
             modelBuilder.Entity<User>().Property(c => c.Name).IsRequired();
@@ -55,12 +56,14 @@ namespace DataAccess
             modelBuilder.Entity<Chat>().Property(ch => ch.Id)
                                        .ValueGeneratedOnAdd()
                                        .UseIdentityColumn();
+            modelBuilder.Entity<Chat>().Property(ch => ch.Name).IsRequired();
 
             modelBuilder.Entity<Message>().HasKey(m => m.Id);
             modelBuilder.Entity<Message>().Property(m => m.Id)
                                           .ValueGeneratedOnAdd()
                                           .UseIdentityColumn();
             modelBuilder.Entity<Message>().Property(m => m.SendingTime).IsRequired();
+            modelBuilder.Entity<Message>().Property(m => m.Command).IsRequired();
 
             modelBuilder.Entity<User>().HasMany(u => u.UsersChats)
                                        .WithOne(uch => uch.User)

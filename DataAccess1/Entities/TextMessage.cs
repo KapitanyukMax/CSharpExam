@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess.Entities
 {
@@ -7,5 +8,13 @@ namespace DataAccess.Entities
     {
         [Required]
         public string Text { get; set; }
+
+        public override string ToString()
+        {
+            string senderName = new MessengerDbContext().Messages.Include(m => m.Sender)
+                                                        .FirstOrDefault(m => m.Id == Id)
+                                                        .Sender.Name;
+            return $"{senderName}: {Text}";
+        }
     }
 }

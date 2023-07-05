@@ -1,21 +1,14 @@
 ﻿using DataAccess;
 using DataAccess.Entities;
-using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Threading.Tasks;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System.Linq;
 
 namespace CSharpExam
 {
@@ -24,45 +17,89 @@ namespace CSharpExam
     /// </summary>
     public partial class MainWindow : Window
     {
-        
-        public MainWindow()
+        private const string serverIp = "127.0.0.1";
+        private const int serverPort = 4000;
+
+        private User user;
+        private TcpClient client = new TcpClient();
+        private Chat chat;
+
+        public MainWindow(User user, Chat? selectedChat)
         {
             InitializeComponent();
+
+            this.user = user;
+            chat = selectedChat;
+            ConnectToServer();
         }
-        public MainWindow(User user)
+
+        private async void ConnectToServer()
         {
-            string login = user.Login;
-            string password = user.Password;
+            await client.ConnectAsync(IPAddress.Parse(serverIp), serverPort);
 
-            InitializeComponent();
+            SendMessage(new Message
+            {
+                SendingTime = DateTime.Now,
+                Command = "JOIN",
+                ChatId = chat.Id,
+                SenderId = user.Id
+            });
 
+            Listen();
         }
+
+        private async void Listen()
+        {
+            while (true)
+            {
+                Message message = await GetMessageAsync();
+
+                if (message.Command == "MESSAGE")
+                    mainListBox.Items.Add(message);
+            }
+        }
+
+        public Task<Message> GetMessageAsync()
+        {
+            return Task.Run(() =>
+            {
+                BinaryFormatter serializer = new BinaryFormatter();
+                return serializer.Deserialize(client.GetStream()) as Message ?? new Message();
+            });
+        }
+
+        public void SendMessage(Message message)
+        {
+            NetworkStream stream = client.GetStream();
+            BinaryFormatter serializer = new BinaryFormatter();
+            serializer.Serialize(stream, message);
+            stream.Flush();
+        }
+
         private void addFileBTN_Click(object sender, RoutedEventArgs e)
         {
 
         }
+
         private void sendBTN_Click(object sender, RoutedEventArgs e)
         {
-            string serverIp = "127.0.0.1";
-            int serverPort = 4000;
-
-            using (TcpClient client = new TcpClient())
+            SendMessage(new TextMessage
             {
-                client.Connect(serverIp, serverPort);
+                SendingTime = DateTime.Now,
+                Command = "MESSAGE",
+                Text = messageTxtBox.Text,
+                ChatId = chat.Id,
+                SenderId = user.Id
+            });
+            messageTxtBox.Clear();
+        }
 
-                using (NetworkStream stream = client.GetStream())
-                {
-                    TextMessage message = new TextMessage();
-                    message.Text = messageTxtBox.Text;
-                    messageTxtBox.Clear();
-                    byte[] messageBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
+        private void messageTxtBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            using var dbContext = new MessengerDbContext();
 
-                    stream.Write(messageBytes, 0, messageBytes.Length);
-                    stream.Flush();
-                }
-
-                client.Close();
-            }
+            foreach (Message message in dbContext.Messages.Where(m => m.ChatId == chat.Id).ToList())
+                mainListBox.Items.Add(message);
         }
         //private void sendBTN_Click(object sender, RoutedEventArgs e)
         //{

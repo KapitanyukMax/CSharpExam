@@ -1,11 +1,8 @@
 ﻿using DataAccess;
 using DataAccess.Entities;
-using Newtonsoft.Json;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Text.Json.Nodes;
 
 namespace Server_TCP
 {
@@ -13,7 +10,70 @@ namespace Server_TCP
     {
         private const string localIp = "127.0.0.1";
         private const short localPort = 4000;
-        
+
+        static MessengerDbContext dbContext = new MessengerDbContext();
+        static Dictionary<TcpClient, User> connectedUsers = new Dictionary<TcpClient, User>();
+
+        private static Message? GetMessage(TcpClient client)
+        {
+            Message message = new Message();
+            try
+            {
+                BinaryFormatter serializer = new BinaryFormatter();
+                message = serializer.Deserialize(client.GetStream()) as Message;
+            }
+            catch (Exception)
+            {
+                client.Close();
+                return null;
+            }
+
+            if (message is TextMessage textMessage)
+                Console.WriteLine($"Received message: {textMessage.Text} : {message.SendingTime}");
+            else if (message is FileMessage fileMessage)
+                Console.WriteLine($"Received message: {fileMessage.Caption} : {message.SendingTime}");
+            else
+                Console.WriteLine($"Received command: {message.Command} : {message.SendingTime}");
+
+            return message;
+        }
+
+        private static void SendResponse(TcpClient client, Message message)
+        {
+            BinaryFormatter serializer = new BinaryFormatter();
+            serializer.Serialize(client.GetStream(), message);
+        }
+
+        private static void Listen(TcpClient client)
+        {
+            while (true)
+            {
+                Message? message = GetMessage(client);
+
+                if (message == null)
+                    break;
+
+                if (message.Command == "MESSAGE")
+                {
+                    foreach (TcpClient connectedClient in connectedUsers.Keys)
+                    {
+                        dbContext.Messages.Add(message);
+                        dbContext.SaveChanges();
+
+                        message.Id = dbContext.Messages.FirstOrDefault(m => m == message).Id;
+
+                        SendResponse(connectedClient, message);
+                    }
+                }
+                else if (message.Command == "LEAVE")
+                {
+                    connectedUsers.Remove(client);
+                    client.Close();
+                    break;
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
             //        HashSet<TcpClient> connectedClients = new HashSet<TcpClient>();
@@ -80,68 +140,61 @@ namespace Server_TCP
             //    Console.WriteLine("Got a TcpClient");
 
             //}
-                HashSet<TcpClient> connectedClients = new HashSet<TcpClient>();
-                using (var dbContext = new MessengerDbContext())
+
+            
+
+            TcpListener server = new TcpListener(IPAddress.Parse(localIp), localPort);
+            server.Start();
+            Console.WriteLine("Server started and ready for requests...");
+
+            while (true)
+            {
+                Console.WriteLine("Waiting for connection...");
+                TcpClient client = server.AcceptTcpClient();
+                Console.WriteLine("Tcp client connected");
+
+                Message message = GetMessage(client);
+
+                if (message == null)
+                    continue;
+
+                if (message.Command == "JOIN")
                 {
-                    List<User> usersFromDB = dbContext.Users.ToList();
-                    TcpListener server = new TcpListener(IPAddress.Parse(localIp), localPort);
-                    server.Start();
-                    Console.WriteLine("Server started and ready for requests...");
+                    if (connectedUsers.Keys.Contains(client))
+                        continue;
 
-                    foreach (User user in usersFromDB)
-                    {
-                        TcpClient client = new TcpClient();
-                        client.Connect(localIp, localPort);
-                        connectedClients.Add(client);
-                    }
+                    connectedUsers.Add(client, message.Sender);
 
-                    while (true)
-                    {
-                        Console.WriteLine("Waiting for connection...");
-                        TcpClient client = server.AcceptTcpClient();
-                        //Console.WriteLine("Connected!");
-
-                        NetworkStream stream = client.GetStream();
-
-                        byte[] buffer = new byte[1024];
-                        int bytesRead;
-
-                        while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
-                        {
-                            string data = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                            TextMessage message = JsonConvert.DeserializeObject<TextMessage>(data);
-
-                            if (message != null)
-                            {
-                            // Перевірка ідентифікації користувача
-                            bool isAuthenticated = true;//usersFromDB.Exists(u => u.Username == message.Sender);
-
-                                if (isAuthenticated)
-                                {
-                                    // Збереження повідомлення у таблиці Message
-                                    dbContext.Messages.Add(message);
-                                    dbContext.SaveChanges();
-
-                                    // Розсилка повідомлення підключеним користувачам
-                                    byte[] messageBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
-                                    foreach (TcpClient connectedClient in connectedClients)
-                                    {
-                                        NetworkStream clientStream = connectedClient.GetStream();
-                                        clientStream.Write(messageBytes, 0, messageBytes.Length);
-                                    }
-                                }
-                            }
-
-                            Console.WriteLine("Received message: " + data);
-
-                            byte[] response = Encoding.UTF8.GetBytes(data);
-                            stream.Write(response, 0, response.Length);
-                        }
-
-                        stream.Close();
-                        client.Close();
-                    }
+                    Listen(client);
                 }
             }
+
+            //while (true)
+            //{
+            //    BinaryFormatter serializer = new BinaryFormatter();
+
+            //    using NetworkStream stream = client.GetStream();
+
+            //    TextMessage message = serializer.Deserialize(stream) as TextMessage;
+
+            //    if (message != null)
+            //    {
+            //        // Перевірка ідентифікації користувача
+            //        bool isAuthenticated = true;//usersFromDB.Exists(u => u.Username == message.Sender);
+
+            //        if (isAuthenticated)
+            //        {
+            //            // Збереження повідомлення у таблиці Message
+            //            //dbContext.Messages.Add(message);
+            //            //dbContext.SaveChanges();
+            //        }
+            //    }
+
+            //    Console.WriteLine("Received message: " + message?.Text ?? "No message");
+
+            //    //byte[] response = Encoding.UTF8.GetBytes(data);
+            //    //stream.Write(response, 0, response.Length);
+            //}
         }
     }
+}
