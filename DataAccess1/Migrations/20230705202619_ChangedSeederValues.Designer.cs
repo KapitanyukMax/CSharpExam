@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MessengerDbContext))]
-    [Migration("20230705165551_ChagedPropertiesAndSeeders")]
-    partial class ChagedPropertiesAndSeeders
+    [Migration("20230705202619_ChangedSeederValues")]
+    partial class ChangedSeederValues
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,4 +1,6 @@
-﻿namespace DataAccess.Entities
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace DataAccess.Entities
 {
     [Serializable]
     public class Message
@@ -35,7 +37,10 @@
 
         public override string ToString()
         {
-            return Command;
+            string senderName = new MessengerDbContext().Messages.Include(m => m.Sender)
+                                                        .FirstOrDefault(m => m.Id == Id)
+                                                        .Sender.Name;
+            return $"{senderName}: {Command}";
         }
     }
 }

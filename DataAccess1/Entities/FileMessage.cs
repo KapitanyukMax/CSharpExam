@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace DataAccess.Entities
@@ -16,7 +17,10 @@ namespace DataAccess.Entities
 
         public override string ToString()
         {
-            return Caption;
+            string senderName = new MessengerDbContext().Messages.Include(m => m.Sender)
+                                                        .FirstOrDefault(m => m.Id == Id)
+                                                        .Sender.Name;
+            return $"{senderName}: {Caption}";
         }
     }
 }
