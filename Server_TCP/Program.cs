@@ -1,12 +1,8 @@
 ﻿using DataAccess;
 using DataAccess.Entities;
-using Newtonsoft.Json;
-using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Text.Json.Nodes;
 
 namespace Server_TCP
 {
@@ -18,10 +14,19 @@ namespace Server_TCP
         static MessengerDbContext dbContext = new MessengerDbContext();
         static Dictionary<TcpClient, User> connectedUsers = new Dictionary<TcpClient, User>();
 
-        private static Message GetMessage(TcpClient client)
+        private static Message? GetMessage(TcpClient client)
         {
-            BinaryFormatter serializer = new BinaryFormatter();
-            Message message = serializer.Deserialize(client.GetStream()) as Message;
+            Message message = new Message();
+            try
+            {
+                BinaryFormatter serializer = new BinaryFormatter();
+                message = serializer.Deserialize(client.GetStream()) as Message;
+            }
+            catch (Exception)
+            {
+                client.Close();
+                return null;
+            }
 
             if (message is TextMessage textMessage)
                 Console.WriteLine($"Received message: {textMessage.Text} : {message.SendingTime}");
@@ -43,7 +48,10 @@ namespace Server_TCP
         {
             while (true)
             {
-                Message message = GetMessage(client);
+                Message? message = GetMessage(client);
+
+                if (message == null)
+                    break;
 
                 if (message.Command == "MESSAGE")
                 {
@@ -144,21 +152,13 @@ namespace Server_TCP
 
                 Message message = GetMessage(client);
 
+                if (message == null)
+                    continue;
+
                 if (message.Command == "JOIN")
                 {
                     if (connectedUsers.Keys.Contains(client))
                         continue;
-
-                    if (!dbContext.Users.Contains(message.Sender))
-                    {
-                        dbContext.Users.Add(message.Sender);
-                        dbContext.SaveChanges();
-                    }
-
-                    message.SenderId = dbContext.Users.FirstOrDefault(u =>
-                            u.Login == message.Sender.Login &&
-                            u.Password == message.Sender.Password)!.Id;
-                    message.Sender.Id = message.SenderId;
 
                     connectedUsers.Add(client, message.Sender);
 

@@ -1,4 +1,6 @@
-﻿using DataAccess.Entities;
+﻿using DataAccess;
+using DataAccess.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -6,6 +8,7 @@ using System.Windows;
 using System.Threading.Tasks;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Linq;
 
 namespace CSharpExam
 {
@@ -18,17 +21,15 @@ namespace CSharpExam
         private const int serverPort = 4000;
 
         private User user;
+        private TcpClient client = new TcpClient();
         private Chat chat;
 
-        public MainWindow(Chat? selectedChat)
-        {
-            InitializeComponent();
-        }
-        public MainWindow(User user)
+        public MainWindow(User user, Chat? selectedChat)
         {
             InitializeComponent();
 
             this.user = user;
+            chat = selectedChat;
             ConnectToServer();
         }
 
@@ -41,7 +42,7 @@ namespace CSharpExam
                 SendingTime = DateTime.Now,
                 Command = "JOIN",
                 ChatId = 1,
-                Sender = user
+                SenderId = user.Id
             });
 
             Listen();
@@ -93,7 +94,7 @@ namespace CSharpExam
                 Command = "MESSAGE",
                 Text = messageTxtBox.Text,
                 ChatId = 1,
-                Sender = user
+                SenderId = user.Id
             });
             messageTxtBox.Clear();
         }

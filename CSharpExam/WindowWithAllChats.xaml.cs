@@ -42,7 +42,7 @@ namespace CSharpExam
                     var chat = dbContext.Chats.FirstOrDefault(c => c.Name == selectedChat);
                     if (chat != null)
                     {
-                        MainWindow mainWindow = new MainWindow(chat);
+                        MainWindow mainWindow = new MainWindow(User, chat);
                         mainWindow.Show();
                     }
                     else

@@ -13,10 +13,24 @@
 
         public int ChatId { get; set; }
 
-        public Chat Chat { get; set; }
+        [NonSerialized]
+        private Chat chat;
+
+        public Chat Chat
+        {
+            get => chat;
+            set => chat = value;
+        }
 
         public int SenderId { get; set; }
 
-        public User Sender { get; set; }
+        [NonSerialized]
+        private User sender;
+
+        public User Sender
+        {
+            get => sender;
+            set => sender = value;
+        }
     }
 }
