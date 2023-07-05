@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DataAccess.Entities
 {
@@ -12,5 +13,10 @@ namespace DataAccess.Entities
         public byte[] FileData { get; set; }
 
         public string? Caption { get; set; }
+
+        public override string ToString()
+        {
+            return Caption;
+        }
     }
 }

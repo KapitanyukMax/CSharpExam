@@ -32,5 +32,10 @@
             get => sender;
             set => sender = value;
         }
+
+        public override string ToString()
+        {
+            return Command;
+        }
     }
 }
