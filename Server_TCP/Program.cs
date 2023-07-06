@@ -14,28 +14,32 @@ namespace Server_TCP
         static MessengerDbContext dbContext = new MessengerDbContext();
         static Dictionary<TcpClient, User> connectedUsers = new Dictionary<TcpClient, User>();
 
-        private static Message? GetMessage(TcpClient client)
+        private static Task<Message?> GetMessageAsync(TcpClient client)
         {
-            Message message = new Message();
-            try
+            return Task.Run(() =>
             {
-                BinaryFormatter serializer = new BinaryFormatter();
-                message = serializer.Deserialize(client.GetStream()) as Message;
-            }
-            catch (Exception)
-            {
-                client.Close();
-                return null;
-            }
+                Message message = new Message();
+                try
+                {
+                    BinaryFormatter serializer = new BinaryFormatter();
+                    message = serializer.Deserialize(client.GetStream()) as Message;
+                }
+                catch (Exception)
+                {
+                    connectedUsers.Remove(client);
+                    client.Close();
+                    return null;
+                }
 
-            if (message is TextMessage textMessage)
-                Console.WriteLine($"Received message: {textMessage.Text} : {message.SendingTime}");
-            else if (message is FileMessage fileMessage)
-                Console.WriteLine($"Received message: {fileMessage.Caption} : {message.SendingTime}");
-            else
-                Console.WriteLine($"Received command: {message.Command} : {message.SendingTime}");
+                if (message is TextMessage textMessage)
+                    Console.WriteLine($"Received message: {textMessage.Text} : {message.SendingTime}");
+                else if (message is FileMessage fileMessage)
+                    Console.WriteLine($"Received message: {fileMessage.Caption} : {message.SendingTime}");
+                else
+                    Console.WriteLine($"Received command: {message.Command} : {message.SendingTime}");
 
-            return message;
+                return message;
+            });
         }
 
         private static void SendResponse(TcpClient client, Message message)
@@ -44,11 +48,11 @@ namespace Server_TCP
             serializer.Serialize(client.GetStream(), message);
         }
 
-        private static void Listen(TcpClient client)
+        private static async void Listen(TcpClient client)
         {
             while (true)
             {
-                Message? message = GetMessage(client);
+                Message? message = await GetMessageAsync(client);
 
                 if (message == null)
                     break;
@@ -146,17 +150,24 @@ namespace Server_TCP
             TcpListener server = new TcpListener(IPAddress.Parse(localIp), localPort);
             server.Start();
             Console.WriteLine("Server started and ready for requests...");
+            Console.WriteLine("Waiting for connection...");
 
             while (true)
             {
-                Console.WriteLine("Waiting for connection...");
                 TcpClient client = server.AcceptTcpClient();
                 Console.WriteLine("Tcp client connected");
 
-                Message message = GetMessage(client);
+                BinaryFormatter serializer = new BinaryFormatter();
+                Message message = serializer.Deserialize(client.GetStream()) as Message;
 
                 if (message == null)
                     continue;
+                else if (message is TextMessage textMessage)
+                    Console.WriteLine($"Received message: {textMessage.Text} : {message.SendingTime}");
+                else if (message is FileMessage fileMessage)
+                    Console.WriteLine($"Received message: {fileMessage.Caption} : {message.SendingTime}");
+                else
+                    Console.WriteLine($"Received command: {message.Command} : {message.SendingTime}");
 
                 if (message.Command == "JOIN")
                 {
