@@ -49,11 +49,6 @@ namespace CSharpExam
             }
         }
 
-        private void LeaveChatBTN_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void chatWindowLstBox_Loaded(object sender, RoutedEventArgs e)
         {
             using var dbContext = new MessengerDbContext();

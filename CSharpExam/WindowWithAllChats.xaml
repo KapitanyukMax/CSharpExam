@@ -29,20 +29,10 @@
     </Window.Resources>
     <StackPanel>
         <Border BorderThickness="2px" BorderBrush="Black" Height="380" Width="380" Margin="0,10,0,5">
-            
-        <ListBox x:Name="chatWindowLstBox" Height="380" Width="380"
+
+            <ListBox x:Name="chatWindowLstBox" Height="380" Width="380"
                  DisplayMemberPath="Name" Loaded="chatWindowLstBox_Loaded"></ListBox>
         </Border>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Button  x:Name="ConntectBTN" Click="ConntectBTN_Click" Grid.Column="3" HorizontalAlignment="Center" Height="30" Width="Auto" Margin="5">Connect</Button>
-            <Button x:Name="LeaveChatBTN" Click="LeaveChatBTN_Click" Grid.Column="2" HorizontalAlignment="Center" Height="30" Width="Auto" Margin="5">Leave Chat</Button>
-        </Grid>
-        
+        <Button x:Name="ConntectBTN" Click="ConntectBTN_Click" Grid.Column="3" HorizontalAlignment="Right" Height="30" Width="Auto" Margin="0,5,15,0">Connect</Button>
     </StackPanel>
 </Window>

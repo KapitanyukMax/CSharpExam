@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 
 namespace CSharpExam
 {
@@ -24,7 +25,9 @@ namespace CSharpExam
         private TcpClient client = new TcpClient();
         private Chat chat;
 
-        public MainWindow(User user, Chat? selectedChat)
+        private bool isListening = false;
+
+        public MainWindow(User user, Chat selectedChat)
         {
             InitializeComponent();
 
@@ -45,26 +48,37 @@ namespace CSharpExam
                 SenderId = user.Id
             });
 
+            isListening = true;
             Listen();
         }
 
         private async void Listen()
         {
-            while (true)
+            while (isListening)
             {
-                Message message = await GetMessageAsync();
+                Message? message = await GetMessageAsync();
 
-                if (message.Command == "MESSAGE")
+                if (message == null)
+                    isListening = false;
+
+                if (message?.Command == "MESSAGE")
                     mainListBox.Items.Add(message);
             }
         }
 
-        public Task<Message> GetMessageAsync()
+        public Task<Message?> GetMessageAsync()
         {
             return Task.Run(() =>
             {
                 BinaryFormatter serializer = new BinaryFormatter();
-                return serializer.Deserialize(client.GetStream()) as Message ?? new Message();
+                try
+                {
+                    return serializer.Deserialize(client.GetStream()) as Message;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
             });
         }
 
@@ -78,7 +92,7 @@ namespace CSharpExam
 
         private void addFileBTN_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void sendBTN_Click(object sender, RoutedEventArgs e)
@@ -101,23 +115,19 @@ namespace CSharpExam
             foreach (Message message in dbContext.Messages.Where(m => m.ChatId == chat.Id).ToList())
                 mainListBox.Items.Add(message);
         }
-        //private void sendBTN_Click(object sender, RoutedEventArgs e)
-        //{
-        //    string serverIp = "127.0.0.1";
-        //    int serverPort = 4000;
-        //    using (TcpClient client = new TcpClient())
-        //    {
-        //        client.Connect(serverIp, serverPort);
-        //        NetworkStream stream = client.GetStream();
-        //        TextMessage message = new TextMessage();
-        //        message.Text = messageTxtBox.Text;
-        //        byte[]messageBytes = Encoding.UTF8.GetBytes(message.Text);
-        //        stream.Write(messageBytes, 0, messageBytes.Length);
-        //        stream.Close();
-        //        client.Close();
-        //    }
 
+        private void LeaveChatBTN_Click(object sender, RoutedEventArgs e)
+        {
+            SendMessage(new Message
+            {
+                SendingTime = DateTime.Now,
+                Command = "LEAVE",
+                SenderId = user.Id
+            });
 
-        //}
+            isListening = false;
+
+            Close();
+        }
     }
 }
