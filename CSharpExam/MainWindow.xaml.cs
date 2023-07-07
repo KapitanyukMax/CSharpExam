@@ -1,6 +1,5 @@
 ﻿using DataAccess;
 using DataAccess.Entities;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -9,7 +8,9 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
+using Microsoft.Win32;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace CSharpExam
 {
@@ -18,6 +19,7 @@ namespace CSharpExam
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const string filesFolder = @"C:\Users\maxik\source\repos\CSharpExam\CSharpExam\CSharpExam\Files";
         private const string serverIp = "127.0.0.1";
         private const int serverPort = 4000;
 
@@ -33,7 +35,26 @@ namespace CSharpExam
 
             this.user = user;
             chat = selectedChat;
+
             ConnectToServer();
+            ShowFileList();
+        }
+
+        public Task<List<string>> GetAllFilesAsync()
+        {
+            return Task.Run(() =>
+            {
+                return Directory.GetFiles(filesFolder).AsParallel().Select(path =>
+                                $"{new string(Path.GetFileName(path).Take(15).ToArray())}...")
+                                .OrderBy(path => File.GetCreationTime(path)).ToList();
+            });
+        }
+
+        public async void ShowFileList()
+        {
+            filesListBox.Items.Clear();
+            foreach (string file in await GetAllFilesAsync())
+                filesListBox.Items.Add(file);
         }
 
         private async void ConnectToServer()
@@ -63,6 +84,20 @@ namespace CSharpExam
 
                 if (message?.Command == "MESSAGE")
                     mainListBox.Items.Add(message);
+
+                if (message is FileMessage fileMessage)
+                {
+                    string fileName = Path.GetFileName(fileMessage.Url);
+                    string filePath = Path.Combine(filesFolder, fileName);
+                    string shortFileName = $"{new string(fileName.Take(15).ToArray())}...";
+
+                    using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        fs.Write(fileMessage.FileData, 0, fileMessage.FileData.Length);
+                    }
+
+                    filesListBox.Items.Add(shortFileName);
+                }
             }
         }
 
@@ -90,9 +125,26 @@ namespace CSharpExam
             stream.Flush();
         }
 
-        private void addFileBTN_Click(object sender, RoutedEventArgs e)
+        private void sendFileBTN_Click(object sender, RoutedEventArgs e)
         {
-            
+            OpenFileDialog dialog = new OpenFileDialog();
+            if (dialog.ShowDialog() ?? false)
+            {
+                FileMessage message = new FileMessage
+                {
+                    SendingTime = DateTime.Now,
+                    Command = "MESSAGE",
+                    Url = dialog.FileName,
+                    FileData = File.ReadAllBytes(dialog.FileName),
+                    ChatId = chat.Id,
+                    SenderId = user.Id
+                };
+
+                if (!string.IsNullOrWhiteSpace(messageTxtBox.Text))
+                    message.Caption = messageTxtBox.Text;
+
+                SendMessage(message);
+            }
         }
 
         private void sendBTN_Click(object sender, RoutedEventArgs e)
