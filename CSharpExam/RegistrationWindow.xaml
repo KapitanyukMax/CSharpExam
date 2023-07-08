@@ -47,7 +47,7 @@
         </Grid.RowDefinitions>
         <Label Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="30">Registration Form :</Label>
         <Label Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Margin="35 0 0 0">Login :</Label>
-        <Label Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Margin="35 0 0 0">Paswword :</Label>
+        <Label Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Margin="35 0 0 0">Password :</Label>
         <Label Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Margin="35 0 0 0">Confirm password :</Label>
         <Label Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Margin="35 0 0 0">Name :</Label>
         <Label Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Margin="35 0 0 0">Phone number :</Label>
